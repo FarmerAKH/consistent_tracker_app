@@ -5,11 +5,11 @@ class DataBase{
   //this is where i'm think the JSON file is going to go
   DataBase() {}
 
-  bool postInfo(Map payload) {
+  bool postUser(Map payload) {
     return true;
   }
 
-  bool getUserInfo(String id) {
-    
+  bool postTask(int userID, Map payload){
+    return true;
   }
 }
