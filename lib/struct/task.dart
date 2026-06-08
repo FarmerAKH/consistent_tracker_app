@@ -9,6 +9,11 @@ class Task {
   String description;
   DateTime startDate;
   DateTime endDate;
+
+  //for progress remaining calculation
+  Map<String, int> hoursPerDay; //{"hours": 0, "minutes": 0}
+  Map<String, int> hoursLeft = {"hours": 0, "minutes": 0};
+  Map<String, int> totalHours = {"hours": 0, "minutes": 0};
   Map<String, Map<String, dynamic>> progressMap = {};
 
   //constructors and methods
@@ -18,6 +23,7 @@ class Task {
     required this.description,
     required this.startDate,
     required this.endDate,
+    required this.hoursPerDay
   }) {
     taskCount++;
     taskID = taskCount;
