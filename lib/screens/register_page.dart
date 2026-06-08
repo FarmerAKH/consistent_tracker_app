@@ -1,5 +1,6 @@
+import 'package:consistent_tracker_app/struct/user.dart';
 import 'package:flutter/material.dart';
-import '../services/auth_service.dart';
+import 'package:consistent_tracker_app/components/dbService.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -11,13 +12,11 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final auth = AuthService();
 
   void register() async {
     try {
-      await auth.register(
-        emailController.text.trim(),
-        passwordController.text.trim(),
+      await initalizeUser(User(email: emailController.text.trim(),
+        password: passwordController.text.trim())
       );
 
       ScaffoldMessenger.of(context).showSnackBar(

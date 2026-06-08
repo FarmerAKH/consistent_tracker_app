@@ -1,5 +1,5 @@
+import 'package:consistent_tracker_app/components/dbService.dart';
 import 'package:flutter/material.dart';
-import '../services/auth_service.dart';
 import 'register_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -12,11 +12,10 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final auth = AuthService();
 
   void login() async {
     try {
-      await auth.login(
+      await userLogin(
         emailController.text.trim(),
         passwordController.text.trim(),
       );

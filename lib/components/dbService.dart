@@ -1,36 +1,39 @@
+import 'package:consistent_tracker_app/components/auth_service.dart';
 import 'package:consistent_tracker_app/components/db.dart';
 import 'package:consistent_tracker_app/struct/task.dart';
 import 'package:consistent_tracker_app/struct/user.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide User;
 
-
+AuthService authService = AuthService();
 DataBase db = DataBase();
-int userID = 0;
-bool initalizeUser(User user) {
-
-  //for authentication purposes
-  Map<String, String> userAuth = {
-    "userName": user.userName,
-    "password": user.password
-  };
-
+String? userID = "";
+Future<bool> initalizeUser(User user) async {
   //i'm thinking we have an authentication system here to create
   //the user, which returns true or false, and we can use
   //that to return an error
-
-
   //for user data purposes
-  userID++;
-  Map<String, Map<String, dynamic>> payload = {
-    userID.toString(): {
-      "email": user.email,
-      "taskList": {}
-    }
-  };
-
+  try {
+    Map<String?, Map<String, dynamic>> payload = {
+      await authService.register(user.email, user.password): {
+        "taskList": {}
+      }
+    };
+    return db.postUser(payload);
+  } on FirebaseAuthException {
+    return false;
+  }
   //we post the info and expect a boolean to return
-  return db.postUser(payload);
 }
 
+Future<bool> userLogin(String email, String password) async {
+  try{
+    userID = await authService.login(email, password);
+    print(userID);
+    return true;
+  } on FirebaseAuthException {
+    return false;
+  }
+}
 //during app's running, we save the userID so we could use it to post, update, and delete tasks
 bool postTask(int userID, Task task){
   Map<String, Map<String, dynamic>> payload = {
